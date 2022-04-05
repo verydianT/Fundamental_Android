@@ -10,45 +10,50 @@
     <ImageView
         android:id="@+id/profile"
         style="@style/square"
-        android:layout_marginTop="25dp"
-        tools:src="@tools:sample/avatars"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:contentDescription="@string/profile"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/name_tv"
-        style="@style/wrap"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:textSize="18sp"
+        style="@style/fit"
+        android:layout_marginStart="15dp"
+        android:gravity="left"
+        android:textSize="24sp"
         android:textStyle="bold"
-        tools:text="Name"
-        app:layout_constraintTop_toBottomOf="@id/profile"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/username_tv"/>
+        app:layout_constraintStart_toEndOf="@id/profile"
+        app:layout_constraintTop_toTopOf="@id/profile"
+        app:layout_constraintBottom_toBottomOf="@id/username_tv"
+        tools:text="Name"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/username_tv"
-        style="@style/wrap"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
+        style="@style/fit"
+        android:layout_marginStart="15dp"
+        android:gravity="left"
         android:textSize="16sp"
-        tools:text="Username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profile"
         app:layout_constraintTop_toBottomOf="@id/name_tv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@id/profile"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Username"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/tv_company"
         style="@style/wrap"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:textSize="16sp"
         tools:text="Company"
-        app:layout_constraintTop_toBottomOf="@id/username_tv"
+        app:drawableLeftCompat="@drawable/ic_baseline_business_24"
+        app:layout_constraintTop_toBottomOf="@id/profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -59,6 +64,7 @@
         android:gravity="center"
         android:textSize="16sp"
         tools:text="Location"
+        app:drawableLeftCompat="@drawable/ic_baseline_location_on_24"
         app:layout_constraintTop_toBottomOf="@id/tv_company"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

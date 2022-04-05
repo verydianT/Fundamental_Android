@@ -1,5 +1,6 @@
 package com.dicoding.submission2.detail
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -21,13 +22,12 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_USER = "extra_user"
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        supportActionBar?.title = "Detail User"
 
         val username = intent.getStringExtra(EXTRA_USER)
         detailViewModel.getDataUser(username)
@@ -38,7 +38,8 @@ class DetailActivity : AppCompatActivity() {
                         .load(dataUser.avatarUrl)
                         .circleCrop()
                         .into(profile)
-                    usernameTv.text = dataUser.login
+                    supportActionBar?.title =  dataUser.name
+                    usernameTv.text = "@${dataUser.login}"
                     nameTv.text = dataUser.name
                     tvCompany.text = dataUser.company
                     tvLocation.text = dataUser.location
