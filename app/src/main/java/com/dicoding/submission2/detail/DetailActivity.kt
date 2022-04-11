@@ -38,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
                         .load(dataUser.avatarUrl)
                         .circleCrop()
                         .into(profile)
-                    supportActionBar?.title =  dataUser.name
+                    supportActionBar?.title = dataUser.name
                     usernameTv.text = "@${dataUser.login}"
                     nameTv.text = dataUser.name
                     tvCompany.text = dataUser.company

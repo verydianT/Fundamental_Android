@@ -1,13 +1,14 @@
 package com.dicoding.submission2.api
 
 import com.dicoding.submission2.BuildConfig
+import com.dicoding.submission2.database.UserDAO
 import com.dicoding.submission2.model.GithubItem
 import com.dicoding.submission2.model.RespondDataUser
 import com.dicoding.submission2.model.ResponseUser
 import retrofit2.Call
 import retrofit2.http.*
 
-interface ApiService {
+interface ApiService : UserDAO {
 
     @Headers("Authorization: token ${BuildConfig.TOKEN}")
     @GET("search/users")
