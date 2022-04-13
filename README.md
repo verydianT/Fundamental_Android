@@ -1,3 +1,3 @@
-# Submission_2
+# Submission Dicoding
 Fundamental Android
  -- Progress --
