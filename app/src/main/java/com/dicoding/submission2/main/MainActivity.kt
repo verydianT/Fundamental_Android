@@ -3,6 +3,7 @@ package com.dicoding.submission2.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
@@ -10,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.submission2.R
-import com.dicoding.submission2.database.Repository
 import com.dicoding.submission2.databinding.ActivityMainBinding
 import com.dicoding.submission2.favorite.FavoriteActivity
 import com.dicoding.submission2.helper.ViewModelFactory
@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityMainBinding
-    private lateinit var repository: Repository
     private lateinit var user: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,11 +82,17 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (Loading) View.VISIBLE else View.GONE
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.fav -> {
                 val intent = Intent(this, FavoriteActivity::class.java)
                 startActivity(intent)
+                return true
             }
         }
         return super.onOptionsItemSelected(item)

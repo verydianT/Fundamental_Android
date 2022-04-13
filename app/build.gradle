@@ -10,7 +10,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        buildConfigField("String", "TOKEN", '"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"')
+        buildConfigField("String", "TOKEN", '"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"')
         buildConfigField("String", "URL", '"https://api.github.com/"')
         applicationId "com.dicoding.submission3"
         minSdk 21

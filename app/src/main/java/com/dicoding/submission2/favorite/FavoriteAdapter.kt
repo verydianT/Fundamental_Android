@@ -13,7 +13,7 @@ import com.dicoding.submission2.helper.UserDiffCallback
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
-    private val listUser = ArrayList<UserEntity>()
+    private var listUser = ArrayList<UserEntity>()
 
     fun setList(list: List<UserEntity>) {
         val diffCallback = UserDiffCallback(this.listUser, list)

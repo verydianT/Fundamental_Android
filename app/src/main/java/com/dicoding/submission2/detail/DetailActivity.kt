@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.dicoding.submission2.R
+import com.dicoding.submission2.database.UserEntity
 import com.dicoding.submission2.databinding.ActivityDetailBinding
+import com.dicoding.submission2.favorite.FavoriteViewModel
+import com.dicoding.submission2.helper.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -17,6 +20,11 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val detailViewModel by viewModels<DetailViewModel>()
+    private val favoriteViewModel by viewModels<FavoriteViewModel>{
+        ViewModelFactory.getInstance(this)
+    }
+    private var avatar: String? = null
+    private var userN: String? = null
 
     companion object {
         const val EXTRA_USER = "extra_user"
@@ -28,6 +36,8 @@ class DetailActivity : AppCompatActivity() {
 
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val username = intent.getStringExtra(EXTRA_USER)
         detailViewModel.getDataUser(username)
@@ -52,6 +62,8 @@ class DetailActivity : AppCompatActivity() {
                     tvFollowers.text = followers
                     tvRepository.text = repository
                 }
+            this.avatar = dataUser.avatarUrl
+            this.userN = dataUser.login
         }
 
         val fragment = mutableListOf<Fragment>(
@@ -94,9 +106,25 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.isLoading.observe(this) {
             showLoading(it)
         }
+
+        binding.favoriteBtn.setOnClickListener {
+            val favorite = UserEntity(userN!!, avatar)
+            favorite.let {
+                it.username = detailViewModel.dataUser.value!!.login
+                it.profile = detailViewModel.dataUser.value!!.avatarUrl
+            }
+            favoriteViewModel.addFavoriteUser(favorite)
+            finish()
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progress.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
 }
+

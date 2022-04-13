@@ -25,9 +25,6 @@ data class GithubItem(
 	@field:SerializedName("following_url")
 	val followingUrl: String,
 
-	@field:SerializedName("twitter_username")
-	val twitterUsername: Any,
-
 	@field:SerializedName("bio")
 	val bio: String,
 
@@ -39,9 +36,6 @@ data class GithubItem(
 
 	@field:SerializedName("type")
 	val type: String,
-
-	@field:SerializedName("blog")
-	val blog: String,
 
 	@field:SerializedName("subscriptions_url")
 	val subscriptionsUrl: String,

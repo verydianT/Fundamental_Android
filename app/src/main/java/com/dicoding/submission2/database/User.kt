@@ -11,10 +11,10 @@ import kotlinx.android.parcel.Parcelize
 data class UserEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "login")
-    val username: String,
+    var username: String,
 
     @ColumnInfo(name = "avatar_url")
-    val profile: String? = null,
+    var profile: String? = null,
 
     @ColumnInfo(name = "favorite")
     var Favorite: Boolean? = null
