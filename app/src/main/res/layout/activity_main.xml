@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bright"
     tools:context=".main.MainActivity">
 
     <SearchView
@@ -26,7 +25,6 @@
         android:id="@+id/rv_user"
         style="@style/zero"
         android:layout_margin="15dp"
-        android:background="@color/bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
