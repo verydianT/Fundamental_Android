@@ -1,19 +1,31 @@
 package com.dicoding.submission2.main
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.submission2.R
 import com.dicoding.submission2.databinding.ActivityMainBinding
 import com.dicoding.submission2.favorite.FavoriteActivity
+import com.dicoding.submission2.helper.SettingPreferences
 import com.dicoding.submission2.helper.ViewModelFactory
+import com.google.android.material.switchmaterial.SwitchMaterial
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,9 +53,11 @@ class MainActivity : AppCompatActivity() {
                         binding.rvUser.adapter = UserAdapter(emptyList())
                         binding.logo.visibility = View.VISIBLE
                         binding.text.visibility = View.VISIBLE
+                        binding.theme.visibility = View.VISIBLE
                     } else {
                         binding.logo.visibility = View.INVISIBLE
                         binding.text.visibility = View.INVISIBLE
+                        binding.theme.visibility = View.INVISIBLE
                     }
                     return true
                 }
@@ -52,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                     binding.rvUser.adapter = UserAdapter(emptyList())
                     binding.logo.visibility = View.VISIBLE
                     binding.text.visibility = View.VISIBLE
+                    binding.theme.visibility = View.VISIBLE
                     return true
                 }
             })
@@ -76,6 +91,20 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        val switchTheme = findViewById<SwitchMaterial>(R.id.theme)
+        val pref = SettingPreferences.getInstance(dataStore)
+        mainViewModel.themeSetting.observe(this) { darkMode: Boolean ->
+            if (darkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                switchTheme.isChecked = true
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                switchTheme.isChecked = false
+            }
+        }
+        switchTheme.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
+            mainViewModel.saveThemeSetting(isChecked) }
     }
 
     private fun showLoading(Loading: Boolean) {

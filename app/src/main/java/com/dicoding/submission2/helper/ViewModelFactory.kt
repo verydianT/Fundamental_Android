@@ -8,7 +8,7 @@ import com.dicoding.submission2.favorite.FavoriteViewModel
 import com.dicoding.submission2.main.MainViewModel
 import java.lang.IllegalArgumentException
 
-class ViewModelFactory (private val repository: Repository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val repository: Repository) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

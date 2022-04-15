@@ -25,6 +25,7 @@ class DetailActivity : AppCompatActivity() {
     }
     private var avatar: String? = null
     private var userN: String? = null
+    private var isFav: Boolean? = null
 
     companion object {
         const val EXTRA_USER = "extra_user"
@@ -107,14 +108,40 @@ class DetailActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        binding.favoriteBtn.setOnClickListener {
-            val favorite = UserEntity(userN!!, avatar)
-            favorite.let {
-                it.username = detailViewModel.dataUser.value!!.login
-                it.profile = detailViewModel.dataUser.value!!.avatarUrl
+//        binding.favoriteBtn.setOnClickListener {
+//            val favorite = UserEntity(userN!!, avatar, true)
+//            favorite.let {
+//                it.username = detailViewModel.dataUser.value!!.login
+//                it.profile = detailViewModel.dataUser.value!!.avatarUrl
+//            }
+//            favoriteViewModel.addFavoriteUser(favorite)
+//            Toast.makeText(this, "Berhasil ditambahkan ke favorite", Toast.LENGTH_SHORT)
+//                .show()
+//            finish()
+//        }
+
+        favoriteViewModel.getFavoriteUser().observe(this){ user ->
+            binding.favoriteBtn.setOnClickListener {
+                val favorite = UserEntity(userN!!, avatar, true)
+                val fav = user.any { it.username == username }
+                favorite.let {
+                    it.username = detailViewModel.dataUser.value!!.login
+                    it.profile = detailViewModel.dataUser.value!!.avatarUrl
+                }
+                favoriteViewModel.addOrdeleteFavorite(favorite, fav)
+
+
+                if (fav) {
+                    binding.favoriteBtn.setImageResource(R.drawable.ic_baseline_favorite_0)
+                    Toast.makeText(this, "Remove from favorite", Toast.LENGTH_SHORT)
+                    .show()
+                } else {
+                    binding.favoriteBtn.setImageResource(R.drawable.ic_baseline_favorite_1)
+                    Toast.makeText(this, "Add to favorite", Toast.LENGTH_SHORT)
+                    .show()
+                }
+                finish()
             }
-            favoriteViewModel.addFavoriteUser(favorite)
-            finish()
         }
     }
 

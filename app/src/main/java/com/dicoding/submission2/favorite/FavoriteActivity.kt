@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.submission2.database.UserEntity
@@ -31,17 +32,16 @@ class FavoriteActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         favorite = FavoriteAdapter()
+
         binding.rvFavorite.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@FavoriteActivity)
             adapter = favorite
         }
 
-
         favoriteViewModel.getFavoriteUser().observe(this) { Userlist ->
-            if (Userlist != null) {
-                favorite.setList(Userlist)
-            }
+            favorite.setList(Userlist)
+            binding.progressFav.visibility = View.GONE
         }
     }
 

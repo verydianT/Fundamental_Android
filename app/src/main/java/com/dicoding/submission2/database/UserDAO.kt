@@ -13,7 +13,4 @@ interface UserDAO {
 
     @Delete
     fun deleteFavorite(user: UserEntity)
-
-    @Query("SELECT * FROM UserGit WHERE login = :username")
-    fun userFavorite(username: String): Boolean
 }

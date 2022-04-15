@@ -19,6 +19,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
         val diffCallback = UserDiffCallback(this.listUser, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.listUser.addAll(list)
+        this.listUser = list as ArrayList<UserEntity>
         diffResult.dispatchUpdatesTo(this)
     }
 

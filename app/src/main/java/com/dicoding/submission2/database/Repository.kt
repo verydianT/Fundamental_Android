@@ -1,14 +1,12 @@
 package com.dicoding.submission2.database
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import com.dicoding.submission2.Event
 import com.dicoding.submission2.api.ApiService
-import com.dicoding.submission2.helper.Helper
-import com.dicoding.submission2.helper.Preferences
-import com.dicoding.submission2.helper.ViewModelFactory
+import com.dicoding.submission2.helper.SettingPreferences
 import com.dicoding.submission2.model.GithubItem
 import com.dicoding.submission2.model.ResponseUser
 import retrofit2.Call
@@ -19,7 +17,8 @@ import java.util.concurrent.Executors
 
 class Repository(
     private val apiService: ApiService,
-    private val mUserDAO: UserDAO
+    private val mUserDAO: UserDAO,
+    private val preferences: SettingPreferences
     ) {
 
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
@@ -61,15 +60,22 @@ class Repository(
         executorService.execute{ mUserDAO.deleteFavorite(user) }
     }
 
+    fun getThemeSetting(): LiveData<Boolean> {
+        return preferences.getThemeSet().asLiveData()
+    }
+
+    suspend fun saveThemeSetting(isDarkModeActive: Boolean) {
+        preferences.saveTheme(isDarkModeActive)
+    }
+
     companion object{
         private const val TAG = "MainViewModel"
 
         @Volatile
         private var INSTANCE: Repository? = null
-        fun getInstance(apiService: ApiService,
-                        dao: UserDAO) : Repository =
+        fun getInstance(apiService: ApiService, dao: UserDAO, preferences: SettingPreferences) : Repository =
             INSTANCE ?: synchronized(this) {
-                Repository(apiService, dao).also {
+                Repository(apiService, dao, preferences).also {
                     INSTANCE = it
                 }
             }

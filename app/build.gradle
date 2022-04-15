@@ -10,7 +10,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        buildConfigField("String", "TOKEN", '"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"')
+        buildConfigField("String", "TOKEN", '"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"')
         buildConfigField("String", "URL", '"https://api.github.com/"')
         applicationId "com.dicoding.submission3"
         minSdk 21
@@ -62,6 +62,7 @@ dependencies {
 
     implementation "androidx.room:room-ktx:2.4.2"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
     implementation "androidx.room:room-runtime:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
 
