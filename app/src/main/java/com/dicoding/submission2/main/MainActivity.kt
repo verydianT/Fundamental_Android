@@ -1,6 +1,5 @@
 package com.dicoding.submission2.main
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,20 +11,12 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.submission2.R
 import com.dicoding.submission2.databinding.ActivityMainBinding
 import com.dicoding.submission2.favorite.FavoriteActivity
-import com.dicoding.submission2.helper.SettingPreferences
 import com.dicoding.submission2.helper.ViewModelFactory
 import com.google.android.material.switchmaterial.SwitchMaterial
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,7 +38,6 @@ class MainActivity : AppCompatActivity() {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
                     user = p0.toString()
-                    clearFocus()
                     val data = mainViewModel.getUser(user)
                     if (data.equals(null)) {
                         binding.rvUser.adapter = UserAdapter(emptyList())
@@ -81,10 +71,6 @@ class MainActivity : AppCompatActivity() {
             binding.rvUser.adapter = UserAdapter(listUser)
         }
 
-        mainViewModel.isLoading.observe(this){
-            showLoading(it)
-        }
-
         mainViewModel.snackbarText.observe(this) {
             it.getContentIfNotHandled()?.let { snackbar ->
                 Toast.makeText(this, snackbar, Toast.LENGTH_SHORT)
@@ -93,8 +79,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val switchTheme = findViewById<SwitchMaterial>(R.id.theme)
-        val pref = SettingPreferences.getInstance(dataStore)
-        mainViewModel.themeSetting.observe(this) { darkMode: Boolean ->
+        mainViewModel.themeSetting().observe(this) { darkMode: Boolean ->
             if (darkMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 switchTheme.isChecked = true
@@ -105,6 +90,10 @@ class MainActivity : AppCompatActivity() {
         }
         switchTheme.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
             mainViewModel.saveThemeSetting(isChecked) }
+
+        mainViewModel.isLoading.observe(this){
+            showLoading(it)
+        }
     }
 
     private fun showLoading(Loading: Boolean) {

@@ -58,6 +58,7 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/wrap"
+        android:indeterminateTint="@color/gray_bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

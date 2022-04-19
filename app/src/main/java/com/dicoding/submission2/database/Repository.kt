@@ -3,12 +3,12 @@ package com.dicoding.submission2.database
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import com.dicoding.submission2.Event
 import com.dicoding.submission2.api.ApiService
 import com.dicoding.submission2.helper.SettingPreferences
 import com.dicoding.submission2.model.GithubItem
 import com.dicoding.submission2.model.ResponseUser
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,17 +52,21 @@ class Repository(
 
     fun getFavorite(): LiveData<List<UserEntity>> = mUserDAO.getFavorite()
 
-    fun addFavorite(user: UserEntity) {
-        executorService.execute{ mUserDAO.insertFavorite(user) }
+    fun addFavorite(user: UserEntity, favorite: Boolean) {
+        executorService.execute{
+            user.Favorite = favorite
+            mUserDAO.insertFavorite(user)
+        }
     }
 
-    fun deleteFavorite(user: UserEntity) {
-        executorService.execute{ mUserDAO.deleteFavorite(user) }
+    fun deleteFavorite(user: UserEntity, favorite: Boolean) {
+        executorService.execute{
+            user.Favorite = favorite
+            mUserDAO.deleteFavorite(user)
+        }
     }
 
-    fun getThemeSetting(): LiveData<Boolean> {
-        return preferences.getThemeSet().asLiveData()
-    }
+    fun getThemeSetting(): Flow<Boolean> = preferences.getThemeSet()
 
     suspend fun saveThemeSetting(isDarkModeActive: Boolean) {
         preferences.saveTheme(isDarkModeActive)

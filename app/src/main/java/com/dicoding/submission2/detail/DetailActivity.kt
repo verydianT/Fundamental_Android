@@ -25,11 +25,6 @@ class DetailActivity : AppCompatActivity() {
     }
     private var avatar: String? = null
     private var userN: String? = null
-    private var isFav: Boolean? = null
-
-    companion object {
-        const val EXTRA_USER = "extra_user"
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +50,8 @@ class DetailActivity : AppCompatActivity() {
                     tvCompany.text = dataUser.company
                     tvLocation.text = dataUser.location
 
-                    val following = "${dataUser.following} Followers"
-                    val followers = "${dataUser.followers} Following"
+                    val following = "${dataUser.following} Following"
+                    val followers = "${dataUser.followers} Followers"
                     val repository = "${dataUser.publicRepos} Repository"
 
                     tvFollowing.text = following
@@ -72,7 +67,8 @@ class DetailActivity : AppCompatActivity() {
             FollowFragment.newInstance(FollowFragment.Followers)
         )
         val titleFragment = mutableListOf(
-            getString(R.string.following), getString(R.string.followers)
+            getString(R.string.followers),
+            getString(R.string.following)
         )
         val adapter = DetailAdapter(this, fragment)
         binding.viewPager.adapter = adapter
@@ -83,7 +79,7 @@ class DetailActivity : AppCompatActivity() {
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position == 0) {
+                if (tab?.position == FollowFragment.Followers) {
                     detailViewModel.getFollower(username)
                 } else {
                     detailViewModel.getFollowing(username)
@@ -108,19 +104,9 @@ class DetailActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-//        binding.favoriteBtn.setOnClickListener {
-//            val favorite = UserEntity(userN!!, avatar, true)
-//            favorite.let {
-//                it.username = detailViewModel.dataUser.value!!.login
-//                it.profile = detailViewModel.dataUser.value!!.avatarUrl
-//            }
-//            favoriteViewModel.addFavoriteUser(favorite)
-//            Toast.makeText(this, "Berhasil ditambahkan ke favorite", Toast.LENGTH_SHORT)
-//                .show()
-//            finish()
-//        }
-
         favoriteViewModel.getFavoriteUser().observe(this){ user ->
+            val favCheck = user.any { it.username == username }
+            setIcon(favCheck)
             binding.favoriteBtn.setOnClickListener {
                 val favorite = UserEntity(userN!!, avatar, true)
                 val fav = user.any { it.username == username }
@@ -130,18 +116,25 @@ class DetailActivity : AppCompatActivity() {
                 }
                 favoriteViewModel.addOrdeleteFavorite(favorite, fav)
 
-
                 if (fav) {
-                    binding.favoriteBtn.setImageResource(R.drawable.ic_baseline_favorite_0)
                     Toast.makeText(this, "Remove from favorite", Toast.LENGTH_SHORT)
                     .show()
+                    setIcon(fav)
                 } else {
-                    binding.favoriteBtn.setImageResource(R.drawable.ic_baseline_favorite_1)
                     Toast.makeText(this, "Add to favorite", Toast.LENGTH_SHORT)
                     .show()
+                    setIcon(fav)
                 }
                 finish()
             }
+        }
+    }
+
+    private fun setIcon(fav: Boolean) {
+        if (fav) {
+            binding.favoriteBtn.setImageResource(R.drawable.ic_baseline_favorite_1)
+        } else {
+            binding.favoriteBtn.setImageResource(R.drawable.ic_baseline_favorite_0)
         }
     }
 
@@ -152,6 +145,10 @@ class DetailActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
     }
 }
 

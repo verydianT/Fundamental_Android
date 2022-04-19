@@ -20,8 +20,9 @@ class SplashScreen : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        val handler = Handler(mainLooper)
         val time = 3000
-        Handler().postDelayed({
+        handler.postDelayed({
             val intent = Intent(this@SplashScreen, MainActivity::class.java)
             startActivity(intent)
             finish()

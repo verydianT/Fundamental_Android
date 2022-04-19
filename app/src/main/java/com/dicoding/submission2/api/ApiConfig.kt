@@ -17,6 +17,7 @@ class ApiConfig {
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build()
+
             val retrofit = Retrofit.Builder()
                 .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
